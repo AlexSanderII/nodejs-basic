@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script>
+            const callbacks = (err, value) => {
+                if(err ) {
+                    console.log("Callbacks with error: ", err);
+                }
+                else if(value) {
+                    console.log("Callbacks with value: ", value);
+                }
+            }
+         function xamxi(callbacks) {
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() {
+    if (this.readyState == 4 && request.status === 200 ) {
+        callbacks( undefined, request.responseText);
+    } else if(this.readyState == 4 && request.status !== 200 )  {
+        callbacks('Wrongs data', undefined);
+    }
+
+            };
+        request.open("GET", "https://jsonplaceholder.typicode.com/todos/1", true);
+        request.send();
+         }
+         xamxi(callbacks);
+    </script>
+    </head>
+    <body>
+
+    </body>
+</html>

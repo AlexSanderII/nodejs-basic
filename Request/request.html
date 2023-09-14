@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+  </head>
+  <body>
+    <script>
+             const  getData =(id) => {
+
+            return new Promise((resolve, reject) =>{
+            //     const Callbacks = (data, error) => {
+            //     if(data) {
+            //         console.log(">>>>>>Check data",data);
+            //     }
+            //     if(error) {
+            //         console.log(">>>>>> Have some wrongs", error);
+            //     }
+            // };
+          var request = new XMLHttpRequest();
+                 request.onreadystatechange = function() {
+              if (this.readyState === 4 &&  request.status === 200) {
+            //  console.log(`check data `,request.responseText);
+            //  callback(request.responseText, undefined);
+                    const data = JSON.parse(request.responseText);
+                     resolve(data);
+                }          
+              if(this.readyState === 4 && this.status !== 200) {
+            // callback(undefined, "404" );
+                     reject("Somethingss was wrong");
+                  }
+             
+         
+                 };
+     request.open("GET", `https://jsonplaceholder.typicode.com/todos/${id}`, true);
+     request.withCredentials = true;
+     request.send(); 
+
+      
+
+            });
+        }
+// this part to handle data result on screen
+// part 1:
+      // getData(1)
+      // .then(data => {
+      //   console.log("check data" ,data)
+      //   getData(2).then(data => {
+      //       console.log("check data" ,data);
+      //       getData(3).then(data => {
+      //       console.log("check data" ,data);
+      //   })
+
+      //   })
+
+        
+      // })
+      // .catch(error => {
+      //   console.log(error);
+      // });
+
+    // Part 2: (this way helps u wirte code less than)
+    // fetch("https://jsonplaceholder.typicode.com/todos/1")
+    // .then(data => {
+    //   return data.json();
+    // })
+    // .then(data1 => { 
+    //   console.log("check data" ,data1);
+    // })
+    
+    // Part 3: 
+    // const getDataF = async (id) => {
+    //     let respon = await      fetch(`https://jsonplaceholder.typicode.com/todos/${id}`);
+    //     let data = await respon.json();
+    //     // how to take exception (error) 
+    //     // Part 1:
+    //     if(respon && respon.status !== 200) {
+    //       throw new Error("Something wrong, status : "+  respon.status );
+
+    //     }
+    //     return data;
+    // }
+ 
+
+    //Take exception 
+    // Part 2:
+    const getDataF = async (id) => {
+       try {
+        let respon = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`);
+        let data = await respon.json();
+        if(respon && respon.status !== 200) {
+          throw new Error("Something wrong, status : "+  respon.status );
+
+        }
+        return data;
+f       } catch (error) {
+        console.log(">>>>Check error: ",error.message);
+       }
+      
+      
+      
+    }
+
+     getDataF(2).then(data => {
+        console.log("check data" ,data);
+      })
+      // .catch(err => console.log(err.message) );
+      
+
+
+     // promise example 
+    //  const promiseExp = () =>{
+    //     return new Promise((resolve,reject) =>{
+                    
+    //         resolve("This method is working");
+    //         // if action is not working
+    //         reject("This method is not fucking working");
+
+    //     });
+
+
+    //  }
+    //  promiseExp()
+    //    // if action is working
+    //  .then(data => {
+    //     console.log(data);
+    //  })
+    //    // if action is not working
+
+    //  .catch(error =>{
+    //     console.log(error);
+    //  })
+
+
+             </script>
+    <p id="demo"></p>
+  </body>
+</html>
